@@ -2,6 +2,8 @@ const handValueMiddleware = require('../middleware/getHandValue');
 
 let cardIDs = handValueMiddleware.cardIDs;
 
+let storedHandValues = {};
+
 exports.getPossibleOptions = (hand) => {
     let optionsList = [];
     let cards = hand.cards;
@@ -53,12 +55,13 @@ exports.getPossibleOptions = (hand) => {
     return optionsList;
 };
 
-exports.getPossibleOptionValues = (option) => {
-    let possibleHands = getPossibleHands(option);
-    return determineOptionValue(option, possibleHands);
+exports.getPossibleOptionValues = async (option) => {
+    let possibleHands = await getPossibleHands(option);
+    let optionValue = await determineOptionValue(option, possibleHands);
+    return optionValue;
 };
 
-function getPossibleHands(option) {
+let getPossibleHands = async (option) => {
     let possibleHandList = [];
 
     if (option.dropped.length === 0) { possibleHandList.push({ cards: [ option.held[0], option.held[1], option.held[2], option.held[3], option.held[4] ] }); }
@@ -95,18 +98,26 @@ function getPossibleHands(option) {
     }
 
     return possibleHandList;
-}
+};
 
 exports.getPossibleHands = getPossibleHands;
 
-function determineOptionValue(option, possibleHands) {
-    let p = possibleHands;
+let getCardsString = (cards) => {
+    let string = "";
+    cards.forEach((card) => string += card);
+    return string;
+};
 
+let determineOptionValue = async (option, possibleHands) => {
     option.value = 0;
-    let valueList = [];
     possibleHands.forEach((hand) => {
-        handValueMiddleware.getHandValue(hand);
-        option.value += hand.value.Value;
+        let cardsString = getCardsString(hand.cards);
+        if (storedHandValues.hasOwnProperty(cardsString)) { option.value += storedHandValues[cardsString]; }
+        else {
+            let value = handValueMiddleware.getHandValue(hand).value.Value;
+            storedHandValues[cardsString] = value;
+            option.value += value;
+        }
     });
-    option.value = option.value / p.length;
-}
+    option.value = option.value / possibleHands.length;
+};

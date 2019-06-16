@@ -23,51 +23,19 @@ const Values = {
     THREE_OF_A_KIND:    { Type: "Three of a Kind", Value: 3 },
     TWO_PAIR:           { Type: "Two Pair", Value: 1 },
     JACKS_OR_BETTER:    { Type: "Jacks or Better", Value: 1 },
-    SINGLES:            { Type: "Singles Only", Value: 0 },
+    NOTHING:            { Type: "No Win", Value: 0 },
 
     //  Unused
     FOUR_OF_A_KIND:     { Type: "FOUR of a Kind", Value: 30 },
     ROYAL_STRAIGHT:     { Type: "Royal Straight", Value: 35 },
 };
 
+exports.HandValues = Values;
+
 //  Returns the value of the hand, given the current math sheet
 exports.getHandValue = (hand) => {
     hand.cards.sort();
-
-    //  If the user sents a cards list with any number other than 5 entries, return -1 to indicate an invalid hand
-    if (hand.cards.length != 5) {
-        console.log(`User sent a hand with ${hand.cards.length} cards. Could not find hand value. Cards:`);
-        console.log(hand.cards);
-        hand.value = null;
-        hand.error = `User sent a hand with ${hand.cards.length} cards. Could not find hand value.`;
-        return hand;
-    }
-
-    //  If the user sents a cards list with identifiers that don't map to our pattern, return -1 to indicate an invalid hand
-    for (let i = 0; i < hand.cards.length; ++i) {
-        let cardID = hand.cards[i];
-        if (!cardIDs.includes(cardID)) {
-            console.log(`User sent a cards object with card ID ${cardID} which does not map to our card list entries names. Could not find hand value. Cards:`);
-            console.log(hand.cards);
-            hand.value = null;
-            hand.error = `User sent a cards object with card ID ${cardID} which does not map to our card list entries names. Could not find hand value.`;
-            return hand;
-        }
-    }
-
-    //  If any of the cards included in the list the user posted are identical, return -1 to indicate an invalid hand
-    for (let i = 0; i < hand.cards.length - 1; ++i) {
-        for (let j = i + 1; j < hand.cards.length; ++j) {
-            if (hand.cards[i] === hand.cards[j]) {
-                console.log(`User sent a cards object with duplicate cards. Could not find hand value. Cards:`);
-                console.log(hand.cards);
-                hand.value = null;
-                hand.error = `User sent a cards object with duplicate cards. Could not find hand value.`;
-                return hand;
-            }
-        }
-    }
-
+    
     //  If we've gotten this far, we know the hand is valid, so we should test it against the different types of value returns, starting with the largest
     if (GetFourAcesAny234(hand))        { return hand; }
     if (GetRoyalFlushValue(hand))       { return hand; }
@@ -83,7 +51,7 @@ exports.getHandValue = (hand) => {
     if (GetTwoPairValue(hand))          { return hand; }
     if (GetJacksOrBetterValue(hand))    { return hand; }
 
-    hand.value = Values.SINGLES;
+    hand.value = Values.NOTHING;
     return hand; 
 };
 
