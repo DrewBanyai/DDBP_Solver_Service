@@ -7,8 +7,7 @@ let storedBestMoves = {};
 exports.best_move = async (req, res, next) => {
     let hand = req.body;
     hand.cards.sort();
-    console.log("Checking for best move:");
-    console.log(hand.cards);
+    console.log("Checking for best move: " + hand.cards);
 
     if (!handValidMiddleware.isHandValid(hand)) {
         res.status(200).json({
