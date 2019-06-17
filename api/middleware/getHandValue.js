@@ -86,28 +86,23 @@ function GetFour234WithAceValue(hand) {
 }
 
 function GetFour234Value(hand) {
-    let Four234 = (HandHasFourOf(hand, "2") || HandHasFourOf(hand, "3") || HandHasFourOf(hand, "4"));
-    return (hand.value = (Four234 ? Values.FOUR_234 : 0));
-}
-
-function GetFour234Value(hand) {
-    if (!HandHasFourOf(hand, "2")) { return (hand.value = null); }
-    if (!HandHasFourOf(hand, "3")) { return (hand.value = null); }
-    if (!HandHasFourOf(hand, "4")) { return (hand.value = null); }
-    return (hand.value = Values.FOUR_234);
+    if (HandHasFourOf(hand, "2")) { return (hand.value = Values.FOUR_234); }
+    if (HandHasFourOf(hand, "3")) { return (hand.value = Values.FOUR_234); }
+    if (HandHasFourOf(hand, "4")) { return (hand.value = Values.FOUR_234); }
+    return (hand.value = null);
 }
 
 function GetFour5ThroughKValue(hand) {
-    if (!HandHasFourOf(hand, "5")) { return (hand.value = null); }
-    if (!HandHasFourOf(hand, "6")) { return (hand.value = null); }
-    if (!HandHasFourOf(hand, "7")) { return (hand.value = null); }
-    if (!HandHasFourOf(hand, "8")) { return (hand.value = null); }
-    if (!HandHasFourOf(hand, "9")) { return (hand.value = null); }
-    if (!HandHasFourOf(hand, "T")) { return (hand.value = null); }
-    if (!HandHasFourOf(hand, "J")) { return (hand.value = null); }
-    if (!HandHasFourOf(hand, "Q")) { return (hand.value = null); }
-    if (!HandHasFourOf(hand, "K")) { return (hand.value = null); }
-    return (hand.value = Values.FOUR_5_THROUGH_K);
+    if (HandHasFourOf(hand, "5")) { return (hand.value = Values.FOUR_5_THROUGH_K); }
+    if (HandHasFourOf(hand, "6")) { return (hand.value = Values.FOUR_5_THROUGH_K); }
+    if (HandHasFourOf(hand, "7")) { return (hand.value = Values.FOUR_5_THROUGH_K); }
+    if (HandHasFourOf(hand, "8")) { return (hand.value = Values.FOUR_5_THROUGH_K); }
+    if (HandHasFourOf(hand, "9")) { return (hand.value = Values.FOUR_5_THROUGH_K); }
+    if (HandHasFourOf(hand, "T")) { return (hand.value = Values.FOUR_5_THROUGH_K); }
+    if (HandHasFourOf(hand, "J")) { return (hand.value = Values.FOUR_5_THROUGH_K); }
+    if (HandHasFourOf(hand, "Q")) { return (hand.value = Values.FOUR_5_THROUGH_K); }
+    if (HandHasFourOf(hand, "K")) { return (hand.value = Values.FOUR_5_THROUGH_K); }
+    return (hand.value = null);
 }
 
 function GetStraightFlushValue(hand) {
@@ -174,7 +169,9 @@ function GetJacksOrBetterValue(hand) {
 
 //  Used checks with no mathematical return
 function GetRoyalStraightValue(hand) {
-    if ((hand.cards[0][0] === "A") && (hand.cards[1][0] === "J") && (hand.cards[2][0] === "K") && (hand.cards[3][0] === "Q") && (hand.cards[4][0] === "T")) { return (hand.value = Values.ROYAL_STRAIGHT); }
+    if ((hand.cards[0][0] === "A") && (hand.cards[1][0] === "J") && (hand.cards[2][0] === "K") && (hand.cards[3][0] === "Q") && (hand.cards[4][0] === "T")) { 
+        return (hand.value = Values.ROYAL_STRAIGHT);
+    }
     
     return (hand.value = null);
 }

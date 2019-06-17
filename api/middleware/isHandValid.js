@@ -36,6 +36,6 @@ exports.isHandValid = (hand) => {
             }
         }
     }
-
+    
     return true; 
 };

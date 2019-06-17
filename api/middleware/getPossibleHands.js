@@ -1,4 +1,5 @@
 const handValueMiddleware = require('../middleware/getHandValue');
+const cardsStringMiddleware = require('../middleware/getCardsString');
 
 let cardIDs = handValueMiddleware.cardIDs;
 
@@ -6,7 +7,7 @@ let storedHandValues = {};
 
 exports.getPossibleOptions = (hand) => {
     let optionsList = [];
-    let cards = hand.cards;
+    let cards = [...hand.cards];
 
     //  0 Cards Dropped
     optionsList.push({ held: [ cards[0], cards[1], cards[2], cards[3], cards[4] ], dropped: [ ] });
@@ -25,7 +26,7 @@ exports.getPossibleOptions = (hand) => {
     optionsList.push({ held: [ cards[1], cards[2], cards[3] ], dropped: [ cards[0], cards[4] ] });
     optionsList.push({ held: [ cards[0], cards[1], cards[4] ], dropped: [ cards[2], cards[3] ] });
     optionsList.push({ held: [ cards[0], cards[2], cards[4] ], dropped: [ cards[1], cards[3] ] });
-    optionsList.push({ held: [ cards[1], cards[2], cards[3] ], dropped: [ cards[0], cards[3] ] });
+    optionsList.push({ held: [ cards[1], cards[2], cards[4] ], dropped: [ cards[0], cards[3] ] });
     optionsList.push({ held: [ cards[0], cards[3], cards[4] ], dropped: [ cards[1], cards[2] ] });
     optionsList.push({ held: [ cards[1], cards[3], cards[4] ], dropped: [ cards[0], cards[2] ] });
     optionsList.push({ held: [ cards[2], cards[3], cards[4] ], dropped: [ cards[0], cards[1] ] });
@@ -102,16 +103,10 @@ let getPossibleHands = async (option) => {
 
 exports.getPossibleHands = getPossibleHands;
 
-let getCardsString = (cards) => {
-    let string = "";
-    cards.forEach((card) => string += card);
-    return string;
-};
-
 let determineOptionValue = async (option, possibleHands) => {
     option.value = 0;
     possibleHands.forEach((hand) => {
-        let cardsString = getCardsString(hand.cards);
+        let cardsString = cardsStringMiddleware.getCardsString(hand.cards);
         if (storedHandValues.hasOwnProperty(cardsString)) { option.value += storedHandValues[cardsString]; }
         else {
             let value = handValueMiddleware.getHandValue(hand).value.Value;
