@@ -106,11 +106,11 @@ exports.getPossibleHands = getPossibleHands;
 let determineOptionValue = async (option, possibleHands) => {
     option.value = 0;
     possibleHands.forEach((hand) => {
-        let cardsString = cardsStringMiddleware.getCardsString(hand.cards);
-        if (storedHandValues.hasOwnProperty(cardsString)) { option.value += storedHandValues[cardsString]; }
+        let cardString = cardsStringMiddleware.getCardsString(hand.cards);
+        if (storedHandValues.hasOwnProperty(cardString)) { option.value += storedHandValues[cardString]; }
         else {
             let value = handValueMiddleware.getHandValue(hand).value.Value;
-            storedHandValues[cardsString] = value;
+            storedHandValues[cardString] = value;
             option.value += value;
         }
     });

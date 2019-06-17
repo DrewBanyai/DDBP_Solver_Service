@@ -13,8 +13,9 @@ app.use(bodyParser.json());
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    res.header('Access-Control-Allow-Headers', 'Access-Control-Allow-Origin, Cache-Control, Access-Control-Allow-Headers, Access-Control-Request-Method, Access-Control-Request-Headers, Origin, X-Requested-With, X-Powered-By, Content-Type, Accept, Authorization');
     if (req.method === 'OPTIONS') {
+        res.header('Access-Control-Allow-Credentials', 'true');
         res.header('Access-Control-Allow-Methods', 'POST');
         return res.status(200).json({});
     }
@@ -33,9 +34,7 @@ app.use((req, res, next) => {
 
 app.use((error, req, res, next) => {
     res.status(error.status || 500);
-    res.json({
-        error: `Status ${error.status}: ${error.message}`
-    });
-})
+    res.json({ error: `Status ${error.status}: ${error.message}` });
+});
 
 module.exports = app;
