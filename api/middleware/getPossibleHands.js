@@ -3,8 +3,6 @@ const cardsStringMiddleware = require('../middleware/getCardsString');
 
 let cardIDs = handValueMiddleware.cardIDs;
 
-let storedHandValues = {};
-
 exports.getPossibleOptions = (hand) => {
     let optionsList = [];
     let cards = [...hand.cards];
@@ -105,14 +103,6 @@ exports.getPossibleHands = getPossibleHands;
 
 let determineOptionValue = async (option, possibleHands) => {
     option.value = 0;
-    possibleHands.forEach((hand) => {
-        let cardString = cardsStringMiddleware.getCardsString(hand.cards);
-        if (storedHandValues.hasOwnProperty(cardString)) { option.value += storedHandValues[cardString]; }
-        else {
-            let value = handValueMiddleware.getHandValue(hand).value.Value;
-            storedHandValues[cardString] = value;
-            option.value += value;
-        }
-    });
+    possibleHands.forEach((hand) => { option.value += handValueMiddleware.getHandValue(hand).value.Value; });
     option.value = option.value / possibleHands.length;
 };

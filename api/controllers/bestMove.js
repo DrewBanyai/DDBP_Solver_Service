@@ -10,7 +10,6 @@ mongoose.connect(`mongodb+srv://drewb:${process.env.MONGO_ATLAS_PASSWORD}@cluste
 exports.best_move = async (req, res, next) => {
     let hand = req.body;
     hand.cards.sort();
-    console.log("Checking for best move: " + hand.cards);
 
     if (!handValidMiddleware.isHandValid(hand)) {
         res.status(200).json({
@@ -18,40 +17,38 @@ exports.best_move = async (req, res, next) => {
             error: hand.error,
             value: hand.value,
         });
+        console.log("");
         return;
     }
 
     let cardString = cardsStringMiddleware.getCardsString(hand.cards);
 
-    let bestOption = await bestMoveModel.findOne({ cardString: cardString }).exec();//.then(entry => { console.log("FOUND ENTRY:"); console.log(entry)}).catch(error => console.log(error));
+    let bestOption = await bestMoveModel.findOne({ cardString: cardString }).exec();
     if (bestOption === null) {
         let optionsList = possibleHandsMiddleware.getPossibleOptions(hand);
         let valuePromiseList = [];
-        optionsList.forEach((option) => { 
-            valuePromiseList.push(new Promise(async (resolve) => {
-                await possibleHandsMiddleware.getPossibleOptionValues(option);
-                resolve(true);
-            }));
-        });
+        optionsList.forEach((option) => { valuePromiseList.push(possibleHandsMiddleware.getPossibleOptionValues(option)); });
+
+        console.log("Checking for best move: " + hand.cards);
+
         await (Promise.all(valuePromiseList));
         optionsList.sort((a, b) => { return (b.value > a.value) ? 1 : -1; });
         bestOption = optionsList[0];
-
 
         const bestMoveEntry = new bestMoveModel({
             _id: new mongoose.Types.ObjectId(),
             cardString: cardString,
             held: bestOption.held,
-            dropped: bestOption.dropped,
             value: bestOption.value
         });
-        bestMoveEntry.save().then(result => console.log(`New entry written to database: ${result.cardString}`)).catch(error => console.log(error));
+        let result = await bestMoveEntry.save();
+        console.log(`New entry written to database: ${result.cardString}`);
+        console.log("");
     }
     
     res.status(200).json({
         message: "Success",
-        drop: bestOption.dropped,
-        hold: bestOption.held,
+        held: bestOption.held,
         value: bestOption.value,
     });
 };
