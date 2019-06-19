@@ -9,17 +9,29 @@ mongoose.connect(`mongodb+srv://drewb:${process.env.MONGO_ATLAS_PASSWORD}@cluste
 
 exports.best_move = async (req, res, next) => {
     let hand = req.body;
-    hand.cards.sort();
 
-    if (!handValidMiddleware.isHandValid(hand)) {
+    let bestOption = await determineBestMove(hand);
+    if (!bestOption) {
         res.status(200).json({
             message: "Failure",
             error: hand.error,
             value: hand.value,
         });
-        console.log("");
-        return;
     }
+    else {
+        res.status(200).json({
+            message: "Success",
+            held: bestOption.held,
+            value: bestOption.value,
+        });
+    }
+};
+
+let determineBestMove = async (hand) => {
+
+    hand.cards.sort();
+
+    if (!handValidMiddleware.isHandValid(hand)) { return null; }
 
     let cardString = cardsStringMiddleware.getCardsString(hand.cards);
 
@@ -45,10 +57,8 @@ exports.best_move = async (req, res, next) => {
         console.log(`New entry written to database: ${result.cardString}`);
         console.log("");
     }
-    
-    res.status(200).json({
-        message: "Success",
-        held: bestOption.held,
-        value: bestOption.value,
-    });
+
+    return bestOption;
 };
+
+exports.determine_best_move = determineBestMove;

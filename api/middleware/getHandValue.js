@@ -10,24 +10,24 @@ exports.cardIDs = cardIDs;
 const cardValues = [ "A", "2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K" ];
 
 const Values = {
-    FOUR_A_ANY_234:     { Type: "Four Aces With Any 2, 3, 4", Value: 400 },
-    ROYAL_FLUSH:        { Type: "Royal Flush", Value: 250 },
+    ROYAL_FLUSH:        { Type: "Royal Flush", Value: 800 },
     FOUR_ACES:          { Type: "Four Aces", Value: 160 },
-    FOUR_234_WITH_A:    { Type: "Four 2s, 3s, 4s with Ace", Value: 160 },
     FOUR_234:           { Type: "Four 2s, 3s, or 4s", Value: 80 },
-    FOUR_5_THROUGH_K:   { Type: "Four 5s Through Kings", Value: 50 },
     STRAIGHT_FLUSH:     { Type: "Straight Flush", Value: 50 },
-    FULL_HOUSE:         { Type: "Full House", Value: 8 },
-    FLUSH:              { Type: "Flush", Value: 5 },
-    STRAIGHT:           { Type: "Straight", Value: 4 },
+    FOUR_5_THROUGH_K:   { Type: "Four 5s Through Kings", Value: 50 },
+    FULL_HOUSE:         { Type: "Full House", Value: 10 },
+    FLUSH:              { Type: "Flush", Value: 7 },
+    STRAIGHT:           { Type: "Straight", Value: 5 },
     THREE_OF_A_KIND:    { Type: "Three of a Kind", Value: 3 },
     TWO_PAIR:           { Type: "Two Pair", Value: 1 },
     JACKS_OR_BETTER:    { Type: "Jacks or Better", Value: 1 },
     NOTHING:            { Type: "No Win", Value: 0 },
 
     //  Unused
-    FOUR_OF_A_KIND:     { Type: "FOUR of a Kind", Value: 30 },
-    ROYAL_STRAIGHT:     { Type: "Royal Straight", Value: 35 },
+    //FOUR_A_ANY_234:     { Type: "Four Aces With Any 2, 3, 4", Value: 400 },
+    //FOUR_234_WITH_A:    { Type: "Four 2s, 3s, 4s with Ace", Value: 160 },
+    //ROYAL_STRAIGHT:     { Type: "Royal Straight", Value: 35 },
+    //FOUR_OF_A_KIND:     { Type: "Four of a Kind", Value: 50 },
 };
 
 exports.HandValues = Values;

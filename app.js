@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 
 const handValueRoutes = require('./api/routes/handValue');
 const bestMoveRoutes = require('./api/routes/bestMove');
+const generateDataRoutes = require('./api/routes/generateData');
 
 //  Include debugging and body parsing functionality
 app.use(morgan('dev'));
@@ -25,6 +26,7 @@ app.use((req, res, next) => {
 //  Routes which should handle requests
 app.use('/handValue', handValueRoutes);
 app.use('/bestMove', bestMoveRoutes);
+app.use('/generateData', generateDataRoutes);
 
 app.use((req, res, next) => {
     const error = new Error('Route not found');
