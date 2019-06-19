@@ -9,8 +9,9 @@ try {
     mongoose.connect(`mongodb+srv://drewb:${process.env.MONGO_ATLAS_PASSWORD}@cluster0-ld6lo.mongodb.net/test?retryWrites=true&w=majority`, { useNewUrlParser: true });
 }
 catch (error) {
-    console.log("Error while attempting to connect to MongoDB Server:")
-    console.log(error);
+    console.log("Error while attempting to connect to MongoDB Server:");
+    console.log(error.name);
+    console.log(error.message);
 }
 
 exports.best_move = async (req, res, next) => {
