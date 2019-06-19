@@ -5,7 +5,13 @@ const mongoose = require('mongoose');
 
 const bestMoveModel = require('../models/bestMove');
 
-mongoose.connect(`mongodb+srv://drewb:${process.env.MONGO_ATLAS_PASSWORD}@cluster0-ld6lo.mongodb.net/test?retryWrites=true&w=majority`, { useNewUrlParser: true });
+try {
+    mongoose.connect(`mongodb+srv://drewb:${process.env.MONGO_ATLAS_PASSWORD}@cluster0-ld6lo.mongodb.net/test?retryWrites=true&w=majority`, { useNewUrlParser: true });
+}
+catch (error) {
+    console.log("Error while attempting to connect to MongoDB Server:")
+    console.log(error);
+}
 
 exports.best_move = async (req, res, next) => {
     let hand = req.body;
