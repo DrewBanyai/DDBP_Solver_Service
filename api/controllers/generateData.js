@@ -2,6 +2,7 @@ const handValueMiddleware = require('../middleware/getHandValue');
 const bestMoveController = require('../controllers/bestMove');
 
 exports.generate_data = async (req, res, next) => {
+    console.log("generate_data");
     generateData(); 
 
     res.status(200).json({

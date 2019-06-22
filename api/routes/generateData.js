@@ -11,6 +11,4 @@ router.get('/', (req, res, next) => {
 
 router.post('/', generateDataController.generate_data);
 
-generateDataController.generateData();
-
 module.exports = router;
