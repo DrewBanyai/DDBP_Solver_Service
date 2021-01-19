@@ -7,7 +7,7 @@ const bestMoveModel = require('../models/bestMove');
 
 let connectToDatabase = async () => {
     let connectFunc = async () => {
-        await mongoose.connect("mongodb+srv://drewb:Drew.3739@cluster0-ld6lo.mongodb.net/test?retryWrites=true&w=majority", { useNewUrlParser: true });
+        await mongoose.connect("mongodb+srv://drewb:Drew.3739@cluster0-ld6lo.mongodb.net/StereodoseRedux?retryWrites=true&w=majority", { useNewUrlParser: true });
     };
 
     try {
@@ -60,15 +60,21 @@ let determineBestMove = async (hand) => {
         optionsList.sort((a, b) => { return (b.value > a.value) ? 1 : -1; });
         bestOption = optionsList[0];
 
-        const bestMoveEntry = new bestMoveModel({
-            _id: new mongoose.Types.ObjectId(),
-            cardString: cardString,
-            held: bestOption.held,
-            value: bestOption.value
-        });
-        let result = await bestMoveEntry.save();
-        console.log(`New entry written to database: ${result.cardString}`);
-        console.log("");
+        try {
+            const bestMoveEntry = new bestMoveModel({
+                _id: new mongoose.Types.ObjectId(),
+                cardString: cardString,
+                held: bestOption.held,
+                value: bestOption.value
+            });
+            let result = await bestMoveEntry.save();
+            console.log(`New entry written to database: ${result.cardString}`);
+            console.log("");
+        }
+        catch (exception) {
+            console.log("Caught exception");
+            console.log(exception);
+        }
     }
 
     return bestOption;

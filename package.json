@@ -1,10 +1,9 @@
 {
-  "name": "nodejstest",
+  "name": "DDBP_Solver_Service",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "nodemon serverAutoGenerate.js",
     "start": "nodemon server.js"
   },
   "author": "",
